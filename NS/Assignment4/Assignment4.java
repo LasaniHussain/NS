@@ -69,6 +69,23 @@ public class Assignment4{
       //Instantiate PDFTextStripper class
       PDFTextStripper pdfStripper = new PDFTextStripper();
       //Retrieving text from PDF document
-      //String text = pdfStripper.getText(document);
+      String text = pdfStripper.getText(document);
+      MessageDigest md5;
+      try 
+      {
+        md5 = MessageDigest.getInstance("MD5");
+      } 
+      catch (NoSuchAlgorithmException e) 
+      {
+        throw new IllegalStateException(e.getMessage(), e);
+      }
+    md5.reset();
+    md5.update(text.getBytes());
+    byte[] digest = md5.digest();
+    BigInteger bigInt = new BigInteger(1,digest);
+    String hashtext = bigInt.toString(16);
+    System.out.println(hashtext);
+      //Closing the document
+      document.close();
     }
 }
