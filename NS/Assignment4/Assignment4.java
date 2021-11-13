@@ -69,6 +69,6 @@ public class Assignment4{
       //Instantiate PDFTextStripper class
       PDFTextStripper pdfStripper = new PDFTextStripper();
       //Retrieving text from PDF document
-      String text = pdfStripper.getText(document);
+      //String text = pdfStripper.getText(document);
     }
 }
