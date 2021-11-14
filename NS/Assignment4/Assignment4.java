@@ -104,6 +104,48 @@ public class Assignment4{
         }
         return key;
     }
+    public static String encrypt(String str,SecretKey key) 
+    {
+ 
+        try 
+        {
+            Cipher ecipher = Cipher.getInstance("DES");
+            ecipher.init(Cipher.ENCRYPT_MODE, key);
+
+            //System.out.println("Decrypted: " + decrypted);
+            byte[] utf8 = str.getBytes("UTF8");
+            byte[] enc = ecipher.doFinal(utf8);
+            // encode to base64
+            //enc = BASE64EncoderStream.encode(enc);
+            enc=Base64.getEncoder().encode(enc);
+            return new String(enc);
+        }
+        catch (Exception e) 
+        {
+        e.printStackTrace();
+        }
+        return null;
+    }
+ 
+    public static String decrypt(String str,SecretKey key) 
+    {
+        try 
+        {
+            Cipher dcipher = Cipher.getInstance("DES");
+
+            dcipher.init(Cipher.DECRYPT_MODE, key);
+
+            byte[] dec=Base64.getDecoder().decode(str.getBytes());
+            byte[] utf8 = dcipher.doFinal(dec);
+          // create new string based on the specified charset
+            return new String(utf8, "UTF8");
+        }
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
     static void init(Client cl1,Client cl2,TimestampingServer ts,PublicKeyServer pks,AuthenticationServer as){
         //symm key between client1 and AS
         SecretKey cl1_AS=genDesKey();
@@ -120,7 +162,7 @@ public class Assignment4{
         //symm key between TS and AS
         SecretKey TS_AS=genDesKey();
         as.addSymmKey(ts.id, TS_AS);
-        
+
         as.DiplaySymmKeys();
         //
     }
