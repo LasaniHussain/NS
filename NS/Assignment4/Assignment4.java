@@ -249,7 +249,7 @@ public class Assignment4{
         //symm key between TS and AS
         SecretKey TS_AS=des.genDesKey();
         as.addSymmKey(ts.id, TS_AS);
-        
+
         as.DiplaySymmKeys();
         as.pk_id = pks.id;
         as.ts_id = ts.id;
