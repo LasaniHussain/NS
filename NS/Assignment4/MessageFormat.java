@@ -17,10 +17,10 @@ class KeyConversion{
         return new SecretKeySpec(decodedKey, 0, decodedKey.length, "DES"); 
     }
     public static String convertRSAtoString(Key pub_key) {
-        return null;
+        return null;//TODO:implement this
     }
     public static Key convertToRSAKey(String decryption) {
-        return null;
+        return null;//TODO:implement this
     }
 }
 
@@ -34,9 +34,9 @@ class AuthenticationRequest{
 }
 
 class AuthenticationTicket{
-    private SecretKey symm_key;
-    private String client_id;
-    private String server_id;
+      SecretKey symm_key;
+      String client_id;
+      String server_id;
     AuthenticationTicket(SecretKey k, String cid, String sid){
         symm_key = k;
         client_id = cid;
@@ -59,9 +59,9 @@ class AuthenticationTicket{
 }
 
 class AuthenticationResponse{
-    private SecretKey symm_key;
-    private String server_id;
-    private ArrayList<String> enc_auth_ticket;
+      SecretKey symm_key;
+      String server_id;
+      ArrayList<String> enc_auth_ticket;
     AuthenticationResponse(SecretKey k, String sid,ArrayList<String> enc_ticket){
         symm_key = k;
         server_id = sid;
@@ -87,8 +87,8 @@ class AuthenticationResponse{
     }
 }
 class ClientTimestampingRequest{
-    private String id;
-    private String doc_hash;
+      String id;
+      String doc_hash;
     ClientTimestampingRequest(String id, String hash){
         id = id;
         doc_hash = hash;
@@ -106,9 +106,9 @@ class ClientTimestampingRequest{
     }
 }
 class TimestampingRequest{
-    private String client_id;
-    private ArrayList<String> auth_ticket;
-    private ArrayList<String> client_request;
+     String client_id;
+     ArrayList<String> auth_ticket;
+     ArrayList<String> client_request;
     TimestampingRequest(String cid,ArrayList<String> at, ArrayList<String> creq ){
         client_id = cid;
         auth_ticket = at;
@@ -116,10 +116,10 @@ class TimestampingRequest{
     }
 }
 class TimestampingResponse{
-    private String doc_hash;
-    private String gmt_timestamp;
-    private String server_id;
-    private ArrayList<String> sign;
+      String doc_hash;
+      String gmt_timestamp;
+      String server_id;
+      ArrayList<String> sign;
     TimestampingResponse(String a, String ts,String sid, ArrayList<String> sign){
         doc_hash = a;
         gmt_timestamp = ts;
@@ -145,10 +145,10 @@ class TimestampingResponse{
     }
 }
 class DigitalSignature{
-    private String doc_hash;
-    private String gmt_timestamp;
-    private String client_id;
-    private String server_id;
+      String doc_hash;
+      String gmt_timestamp;
+      String client_id;
+      String server_id;
     DigitalSignature(String a,String b,String c,String d){
         doc_hash = a;
         gmt_timestamp = b;
@@ -170,8 +170,8 @@ class DigitalSignature{
     }
 }
 class ClientPublicKeyRequest{
-    private String id;
-    private String server_id;
+      String id;
+      String server_id;
     ClientPublicKeyRequest(String id, String sid){
         this.id = id;
         server_id = sid;
@@ -189,9 +189,9 @@ class ClientPublicKeyRequest{
     }
 }
 class PublicKeyRequest{
-    private String client_id;
-    private ArrayList<String> auth_ticket;
-    private ArrayList<String> client_request;
+      String client_id;
+      ArrayList<String> auth_ticket;
+      ArrayList<String> client_request;
     PublicKeyRequest(String cid,ArrayList<String> at, ArrayList<String> creq ){
         client_id = cid;
         auth_ticket = at;
@@ -199,7 +199,7 @@ class PublicKeyRequest{
     }
 }
 class PublicKeyResponse{
-    private Key pub_key;
+      Key pub_key;
     PublicKeyResponse(Key k){
         pub_key = k;
     }

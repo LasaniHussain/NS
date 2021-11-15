@@ -68,7 +68,7 @@ class DES{
         return "";
     }
 }
-class RSA{
+class RSA{//TODO:check this functionality
 
     KeyPair genRSAKeys(){
         KeyPair kpg = null;
@@ -77,7 +77,6 @@ class RSA{
             k.initialize(2048);
             kpg = k.genKeyPair();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return kpg;
@@ -92,7 +91,6 @@ class RSA{
             byte[] encryptedMessageBytes = cipher.doFinal(secretMessageBytes);
             return Base64.getEncoder().encodeToString(encryptedMessageBytes);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return "";
@@ -105,7 +103,6 @@ class RSA{
             byte[] encryptedMessageBytes = cipher.doFinal(secretMessageBytes);
             return Base64.getEncoder().encodeToString(encryptedMessageBytes);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return "";
