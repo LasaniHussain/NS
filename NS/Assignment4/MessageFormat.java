@@ -7,6 +7,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.swing.plaf.synth.SynthStyle;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 
 class KeyConversion{
     static String convertDESToString(SecretKey k){
@@ -16,11 +17,23 @@ class KeyConversion{
         byte[] decodedKey = Base64.getDecoder().decode(k);
         return new SecretKeySpec(decodedKey, 0, decodedKey.length, "DES"); 
     }
-    public static String convertRSAtoString(Key pub_key) {
-        return null;//TODO:implement this
+    public static String convertRSAtoString(PublicKey pub_key) {
+        return Base64.getEncoder().encodeToString(pub_key.getEncoded());
+        
     }
-    public static Key convertToRSAKey(String decryption) {
-        return null;//TODO:implement this
+    public static PublicKey convertToRSAKey(String pub_key) {
+        byte[] publicKeyByteServer = Base64.getDecoder().decode(pub_key);
+        // generate the publicKey
+        KeyFactory keyFactory;
+        try {
+            keyFactory = KeyFactory.getInstance("RSA");
+            return (PublicKey) keyFactory.generatePublic(new X509EncodedKeySpec(publicKeyByteServer));
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return null;
     }
 }
 
@@ -155,7 +168,7 @@ class DigitalSignature{
         client_id = c;
         server_id = d;
     }
-    ArrayList<String> encDigitalSignature(Key k){
+    ArrayList<String> encDigitalSignature(PrivateKey k){
         ArrayList<String> res  = new ArrayList<String>();
         RSA rsa = new RSA();
         res.add(rsa.encryption(doc_hash, k));
@@ -164,7 +177,7 @@ class DigitalSignature{
         res.add(rsa.encryption(server_id, k));
         return res;
     }
-    static DigitalSignature decDigitalSignature(ArrayList<String> enc_sign, Key k){
+    static DigitalSignature decDigitalSignature(ArrayList<String> enc_sign, PublicKey k){
         RSA rsa = new RSA();
         return new DigitalSignature(rsa.decryption(enc_sign.get(0), k), rsa.decryption(enc_sign.get(1), k), rsa.decryption(enc_sign.get(2), k), rsa.decryption(enc_sign.get(3), k));
     }
@@ -199,8 +212,8 @@ class PublicKeyRequest{
     }
 }
 class PublicKeyResponse{
-      Key pub_key;
-    PublicKeyResponse(Key k){
+      PublicKey pub_key;
+    PublicKeyResponse(PublicKey k){
         pub_key = k;
     }
     ArrayList<String> encPublicKeyResponse(SecretKey k){

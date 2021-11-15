@@ -82,7 +82,7 @@ class RSA{//TODO:check this functionality
         return kpg;
     }
 
-    String encryption(String plaintext,Key key){
+    String encryption(String plaintext,PrivateKey key){
         
         try {
             Cipher cipher = Cipher.getInstance("RSA");
@@ -95,7 +95,7 @@ class RSA{//TODO:check this functionality
         }
         return "";
     }
-    String decryption(String ciphertext, Key key){
+    String decryption(String ciphertext, PublicKey key){
         try {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, key);

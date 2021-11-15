@@ -1,4 +1,6 @@
 import java.util.*;
+import java.time.*;
+import java.text.*;
 import java.security.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -53,26 +55,46 @@ class AuthenticationServer{
 
 class PublicKeyServer{//changing name for CA
     String id;
-    String as_symm_key;
-    private Hashtable<String,String> public_keys = new Hashtable<String,String>();
+    SecretKey as_symm_key;
+    private Hashtable<String,PublicKey> public_keys = new Hashtable<String,PublicKey>();
     PublicKeyServer()
     {
         Random rn = new Random();
         id= String.valueOf(200+rn.nextInt(100));
     }
-    void addPublicKey(String id,String public_key){
-
+    void init_as_symm_key(SecretKey k){
+        as_symm_key = k;
     }
-    String public_key_request(String id, String ticket,String request){
-        return "";
+    void addPublicKey(String id,PublicKey public_key){
+        public_keys.put(id, public_key);
+    }
+    ArrayList<String> public_key_request(PublicKeyRequest pk_req){
+        /*
+        1. decrypt the ticket from as 
+        2. verify if the id for the server matches its own
+        3. verfify the id of the client with the one in the ticket
+        4. decrypt the request from the client
+        5. find public key requires
+        6. send the encrypted response back
+        */
+        AuthenticationTicket auth_ticket = AuthenticationTicket.decAuthenticationTicket(pk_req.auth_ticket, as_symm_key);
+        if(auth_ticket.server_id.equals(id)){
+            if(pk_req.client_id.equals(auth_ticket.client_id)){
+                ClientPublicKeyRequest c_req = ClientPublicKeyRequest.decClientPublicKeyRequestlientTimestampingRequest(pk_req.client_request, auth_ticket.symm_key);
+                PublicKey k = public_keys.get(c_req.server_id);//we will assume that the key is always found
+                PublicKeyResponse res = new PublicKeyResponse(k);
+                return res.encPublicKeyResponse(auth_ticket.symm_key);
+            }
+        }
+        return null;
     }
 }
 
 class TimestampingServer{
     String id;
-    String as_symm_key;
-    Key rsa_public_key;//maybe not needed here
-    private Key rsa_private_key;
+    SecretKey as_symm_key;
+    PublicKey rsa_public_key;//maybe not needed here
+    private PrivateKey rsa_private_key;
     void addPrivateKey(String private_key){}
     TimestampingServer()
     {
@@ -83,9 +105,34 @@ class TimestampingServer{
         rsa_public_key = kpg.getPublic();
         rsa_private_key = kpg.getPrivate();
     }
-
-    String timestamping_request(TimestampingRequest treq){
-        return "";
+    void init_as_symm_key(SecretKey k){
+        as_symm_key = k;
+    }
+    ArrayList<String> timestamping_request(TimestampingRequest t_req){
+        /*
+        1. decrypt the ticket from as 
+        2. verify if the id for the server matches its own
+        3. verfify the id of the client with the one in the ticket
+        4. decrypt the request from the client
+        5. generate the timestamp
+        6. sign the hash with certain fields
+        7. send the encrypted response back
+        */
+        AuthenticationTicket auth_ticket = AuthenticationTicket.decAuthenticationTicket(t_req.auth_ticket, as_symm_key);
+        if(auth_ticket.server_id.equals(id)){
+            if(t_req.client_id.equals(auth_ticket.client_id)){
+                ClientTimestampingRequest c_req = ClientTimestampingRequest.decClientTimestampingRequest(t_req.client_request, auth_ticket.symm_key);
+                final Date currentTime = new Date();
+                final SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, yyyy hh:mm:ss a z");
+                sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+                String ts = sdf.format(currentTime);
+                DigitalSignature ds = new DigitalSignature(c_req.doc_hash, ts, t_req.client_id, id);
+                ArrayList<String> sign = ds.encDigitalSignature(rsa_private_key);
+                TimestampingResponse t_res = new TimestampingResponse(c_req.doc_hash, ts, id, sign);
+                return t_res.encTimestampingResponse(auth_ticket.symm_key);
+            }
+        }
+        return null;
     }
 }
 
