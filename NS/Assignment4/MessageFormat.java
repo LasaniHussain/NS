@@ -171,15 +171,25 @@ class DigitalSignature{
     ArrayList<String> encDigitalSignature(PrivateKey k){
         ArrayList<String> res  = new ArrayList<String>();
         RSA rsa = new RSA();
+        DES des = new DES();
+        SecretKey des_key = des.genDesKey();
+        /*
         res.add(rsa.encryption(doc_hash, k));
         res.add(rsa.encryption(gmt_timestamp, k));
         res.add(rsa.encryption(client_id, k));
         res.add(rsa.encryption(server_id, k));
+        */
+        res.add(des.encryption(doc_hash, des_key));
+        res.add(des.encryption(doc_hash, des_key));
+        res.add(des.encryption(doc_hash, des_key));
+        res.add(rsa.encryption(KeyConversion.convertDESToString(des_key), k));
         return res;
     }
     static DigitalSignature decDigitalSignature(ArrayList<String> enc_sign, PublicKey k){
         RSA rsa = new RSA();
-        return new DigitalSignature(rsa.decryption(enc_sign.get(0), k), rsa.decryption(enc_sign.get(1), k), rsa.decryption(enc_sign.get(2), k), rsa.decryption(enc_sign.get(3), k));
+        SecretKey key = KeyConversion.convertToDESKey(rsa.decryption(enc_sign.get(3), k));
+        DES des = new DES();
+        return new DigitalSignature(des.decryption(enc_sign.get(0), key), des.decryption(enc_sign.get(1), key), des.decryption(enc_sign.get(2), key), des.decryption(enc_sign.get(3), key));
     }
 }
 class ClientPublicKeyRequest{

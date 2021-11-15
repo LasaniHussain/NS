@@ -74,7 +74,7 @@ class RSA{//TODO:check this functionality
         KeyPair kpg = null;
         try {
             KeyPairGenerator k = KeyPairGenerator.getInstance("RSA");
-            k.initialize(2048);
+            k.initialize(4096);
             kpg = k.genKeyPair();
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,19 +89,26 @@ class RSA{//TODO:check this functionality
             cipher.init(Cipher.ENCRYPT_MODE, key);
             byte[] secretMessageBytes = plaintext.getBytes("UTF8");
             byte[] encryptedMessageBytes = cipher.doFinal(secretMessageBytes);
-            return Base64.getEncoder().encodeToString(encryptedMessageBytes);
+            System.out.println("enc bytes"+encryptedMessageBytes.length);
+            //System.out.println();
+            String res = Base64.getEncoder().encodeToString(encryptedMessageBytes);
+            //String res = new String(encryptedMessageBytes);
+            System.out.println("enc string "+res.length());
+            return res;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
+        return null;
     }
     String decryption(String ciphertext, PublicKey key){
         try {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, key);
-            byte[] secretMessageBytes = ciphertext.getBytes("UTF8");
+            byte[] secretMessageBytes = Base64.getDecoder().decode(ciphertext.getBytes());
+            System.out.println(secretMessageBytes.length);
             byte[] encryptedMessageBytes = cipher.doFinal(secretMessageBytes);
-            return Base64.getEncoder().encodeToString(encryptedMessageBytes);
+            return new String(encryptedMessageBytes,"UTF-8");
+            //return new String(encryptedMessageBytes,"UTF-8");
         } catch (Exception e) {
             e.printStackTrace();
         }
