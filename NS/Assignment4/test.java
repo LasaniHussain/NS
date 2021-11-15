@@ -11,7 +11,7 @@ public class test {
         ArrayList<String> st = at.encryptAuthenticationTicket(n);
         AuthenticationTicket ne = AuthenticationTicket.decAuthenticationTicket(st, n);
         assert at.equals(ne): "equal";
-        System.out.println(at.symm_key+" "+ne.symm_key);
+        //System.out.println(at.symm_key+" "+ne.symm_key);
 
     }
 }

@@ -84,7 +84,7 @@ class TimestampingServer{
         rsa_private_key = kpg.getPrivate();
     }
 
-    String timestamping_request(String id, String ticket,String request){
+    String timestamping_request(TimestampingRequest treq){
         return "";
     }
 }
