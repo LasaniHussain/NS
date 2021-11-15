@@ -27,26 +27,26 @@ class AuthenticationServer{
         /*for(int i=0;i<symm_keys.size();i++)
         System.out.println(symm_keys.);*/
     }
-    String service_request(String client_id, int serviceType){
+    ArrayList<String> service_request(AuthenticationRequest auth_req){
         if(!symm_keys.containsKey(id))
-            return "";
+            return null;
         DES des = new DES();
         SecretKey new_key = des.genDesKey();
-        String ticket;
-        String  response;
-        switch(serviceType){
+        AuthenticationTicket auth_ticket;
+        AuthenticationResponse  response;
+        switch(auth_req.service_type){
             case 1: 
-                ticket = new_key.toString()+client_id+ts_id;
-                ticket = des.encryption(ticket, symm_keys.get(ts_id));
-                response = new_key.toString()+ts_id+ticket;
-                return des.encryption(response, symm_keys.get(client_id));
+                auth_ticket = new AuthenticationTicket(new_key, auth_req.id, ts_id); 
+                ArrayList<String> enc_ticket = auth_ticket.encryptAuthenticationTicket(symm_keys.get(ts_id));
+                response = new AuthenticationResponse(new_key,ts_id,enc_ticket);
+                return response.encAuthenticationResponse(symm_keys.get(auth_req.id));
             case 2: 
-                ticket = new_key.toString()+client_id+pk_id;
-                ticket = des.encryption(ticket, symm_keys.get(pk_id));
-                response = new_key.toString()+pk_id+ticket;
-                return des.encryption(response, symm_keys.get(client_id));
+                auth_ticket = new AuthenticationTicket(new_key, auth_req.id, pk_id); 
+                enc_ticket = auth_ticket.encryptAuthenticationTicket(symm_keys.get(pk_id));
+                response = new AuthenticationResponse(new_key,pk_id,enc_ticket);
+                return response.encAuthenticationResponse(symm_keys.get(auth_req.id));
             default: 
-                return "";
+                return null;
         }
     }
 }
