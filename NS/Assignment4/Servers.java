@@ -30,8 +30,9 @@ class AuthenticationServer{
         System.out.println(symm_keys.);*/
     }
     ArrayList<String> service_request(AuthenticationRequest auth_req){
-        if(!symm_keys.containsKey(id))
-            return null;
+        //System.out.println("inside service request\n");
+        /*if(!symm_keys.containsKey(id))
+            return null;*/
         DES des = new DES();
         SecretKey new_key = des.genDesKey();
         AuthenticationTicket auth_ticket;
@@ -40,6 +41,7 @@ class AuthenticationServer{
             case 1: 
                 auth_ticket = new AuthenticationTicket(new_key, auth_req.id, ts_id); 
                 ArrayList<String> enc_ticket = auth_ticket.encryptAuthenticationTicket(symm_keys.get(ts_id));
+                //System.out.println(enc_ticket.size());
                 response = new AuthenticationResponse(new_key,ts_id,enc_ticket);
                 return response.encAuthenticationResponse(symm_keys.get(auth_req.id));
             case 2: 

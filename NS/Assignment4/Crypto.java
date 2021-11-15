@@ -21,7 +21,24 @@ class DES{
         }
         return key;
     }
-
+    ArrayList<String> enc_list(ArrayList<String> str_list,SecretKey key)
+    {
+        ArrayList<String> sol=new ArrayList<String>();
+        for(int i=0;i<str_list.size();i++)
+        {
+            sol.add(encryption(str_list.get(i), key));
+        }
+        return sol;
+    }
+    ArrayList<String> dec_list(ArrayList<String> str_list,SecretKey key)
+    {
+        ArrayList<String> sol=new ArrayList<String>();
+        for(int i=0;i<str_list.size();i++)
+        {
+            sol.add(decryption(str_list.get(i), key));
+        }
+        return sol;
+    }
     String encryption(String plaintext, SecretKey key){
         try{
             Cipher cipher = Cipher.getInstance("DES");

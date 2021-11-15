@@ -46,30 +46,12 @@ public class Assignment4{
         KeyConversion kc=new KeyConversion();
         cl1.start();
         //System.out.println(kc.convertDESToString(cl1.as_symm_key)+" "+kc.convertDESToString(cl2.as_symm_key));
-        System.out.println(cl1.doc_hash);
-        //System.out.println(cl1.as_symm_key.convertDESToString)
-        /*File file = new File("/home/lasani/IIIT Delhi/Network Security/Assignment 4/Assignment4 NS.pdf");
-      PDDocument document = PDDocument.load(file);
-      //Instantiate PDFTextStripper class
-      PDFTextStripper pdfStripper = new PDFTextStripper();
-      //Retrieving text from PDF document
-      String text = pdfStripper.getText(document);
-      MessageDigest md5;
-      try 
-      {
-        md5 = MessageDigest.getInstance("MD5");
-      } 
-      catch (NoSuchAlgorithmException e) 
-      {
-        throw new IllegalStateException(e.getMessage(), e);
-      }
-    md5.reset();
-    md5.update(text.getBytes());
-    byte[] digest = md5.digest();
-    BigInteger bigInt = new BigInteger(1,digest);
-    String hashtext = bigInt.toString(16);
-    System.out.println(hashtext);
-      //Closing the document
-      document.close();*/
+        //System.out.println(cl1.doc_hash);
+        AuthenticationRequest ar=cl1.send_request_to_as(1);
+        DES des=new DES();
+        ArrayList<String> res_from_as_dec=des.dec_list(as.service_request(ar),cl1.as_symm_key);
+        System.out.println(res_from_as_dec.size());
+        for(int i=0;i<res_from_as_dec.size();i++)
+        System.out.println(res_from_as_dec.get(i));
     }
 }

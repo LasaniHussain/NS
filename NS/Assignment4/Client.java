@@ -55,9 +55,11 @@ class Client{
     void start()
     {
         genHash("/home/lasani/IIIT Delhi/Network Security/Assignment 4/NS/NS/Assignment4/Assignment4 NS.pdf");
+        //send_request_to_as(1);
     }
-    void send_request_to_as(int serviceType){
-            
+    AuthenticationRequest send_request_to_as(int serviceType){
+        AuthenticationRequest ar=new AuthenticationRequest(client_id,serviceType);
+        return ar;
         }
     void request_ts(String ticket_from_as){
 
