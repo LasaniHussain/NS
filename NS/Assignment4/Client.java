@@ -27,7 +27,7 @@ class Client{
             File file = new File(path);
             PDDocument document = PDDocument.load(file);
             //Instantiate PDFTextStripper class
-                    PDFTextStripper pdfStripper = new PDFTextStripper();
+            PDFTextStripper pdfStripper = new PDFTextStripper();
             //Retrieving text from PDF document
             String text = pdfStripper.getText(document);
             //System.out.println(text);
@@ -45,6 +45,7 @@ class Client{
             byte[] digest = md5.digest();
             BigInteger bigInt = new BigInteger(1,digest);
             doc_hash = bigInt.toString(16);
+            System.out.println("hash in client"+doc_hash);
             //return hashtext;
         }
         catch(Exception e)
@@ -54,7 +55,7 @@ class Client{
     }
     void start()
     {
-        genHash("/home/lasani/IIIT Delhi/Network Security/Assignment 4/NS/NS/Assignment4/Assignment4 NS.pdf");
+        genHash("./Assignment4 NS.pdf");
         //send_request_to_as(1);
     }
     AuthenticationRequest send_request_to_as(int serviceType){

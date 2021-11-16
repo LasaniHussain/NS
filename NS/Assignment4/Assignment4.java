@@ -50,11 +50,13 @@ public class Assignment4{
         AuthenticationRequest ar=cl1.send_request_to_as(1);
         DES des=new DES();
         ArrayList<String> res_from_as_enc=as.service_request(ar);
+        AuthenticationResponse auth_res = AuthenticationResponse.decAuthenticationResponse(res_from_as_enc, cl1.as_symm_key);
         //creating timestamping request
         ClientTimestampingRequest cl_ts_req=new ClientTimestampingRequest(cl1.client_id,cl1.doc_hash);
         //Extracting K_ct;
         SecretKey K_ct=KeyConversion.convertToDESKey(des.decryption(res_from_as_enc.get(0),cl1.as_symm_key));
         //encrypting request with Kct
+        System.out.println("hash"+cl1.doc_hash);
         ArrayList<String> cl_ts_req_enc=cl_ts_req.encClientTimestampingRequest(K_ct);
         //Extracting Ticket_c;
         ArrayList<String> Ticket_c=new ArrayList<String>();
@@ -63,7 +65,7 @@ public class Assignment4{
         Ticket_c.add(res_from_as_enc.get(4));
         //creating timestamping request
 
-        TimestampingRequest t_req=new TimestampingRequest(cl1.client_id,Ticket_c,cl_ts_req_enc);
+        TimestampingRequest t_req=new TimestampingRequest(cl1.client_id,auth_res.enc_auth_ticket,cl_ts_req_enc);
         //
         ArrayList<String> ts_res_enc=ts.timestamping_request(t_req);
 

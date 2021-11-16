@@ -6,36 +6,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.swing.plaf.synth.SynthStyle;
-import javax.crypto.spec.SecretKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 
-class KeyConversion{
-    static String convertDESToString(SecretKey k){
-        return Base64.getEncoder().encodeToString(k.getEncoded());
-    }
-    static SecretKey convertToDESKey(String k){
-        byte[] decodedKey = Base64.getDecoder().decode(k);
-        return new SecretKeySpec(decodedKey, 0, decodedKey.length, "DES"); 
-    }
-    public static String convertRSAtoString(PublicKey pub_key) {
-        return Base64.getEncoder().encodeToString(pub_key.getEncoded());
-        
-    }
-    public static PublicKey convertToRSAKey(String pub_key) {
-        byte[] publicKeyByteServer = Base64.getDecoder().decode(pub_key);
-        // generate the publicKey
-        KeyFactory keyFactory;
-        try {
-            keyFactory = KeyFactory.getInstance("RSA");
-            return (PublicKey) keyFactory.generatePublic(new X509EncodedKeySpec(publicKeyByteServer));
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        return null;
-    }
-}
 
 class AuthenticationRequest{
     String id;
