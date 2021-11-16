@@ -61,7 +61,7 @@ class Client{
         AuthenticationRequest ar=new AuthenticationRequest(client_id,serviceType);
         return ar;
         }
-    void request_ts(String ticket_from_as){
+    void request_ts(ArrayList<String> ticket_from_as){
 
     }
     void request_doc(){

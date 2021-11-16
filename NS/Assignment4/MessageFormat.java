@@ -103,7 +103,7 @@ class ClientTimestampingRequest{
       String id;
       String doc_hash;
     ClientTimestampingRequest(String id, String hash){
-        id = id;
+        this.id = id;
         doc_hash = hash;
     }
     ArrayList<String> encClientTimestampingRequest(SecretKey k){
@@ -162,7 +162,7 @@ class DigitalSignature{
       String gmt_timestamp;
       String client_id;
       String server_id;
-    DigitalSignature(String a,String b,String c,String d){
+        DigitalSignature(String a,String b,String c,String d){
         doc_hash = a;
         gmt_timestamp = b;
         client_id = c;
