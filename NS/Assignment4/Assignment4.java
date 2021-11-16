@@ -54,23 +54,36 @@ public class Assignment4{
         //creating timestamping request
         ClientTimestampingRequest cl_ts_req=new ClientTimestampingRequest(cl1.client_id,cl1.doc_hash);
         //Extracting K_ct;
-        SecretKey K_ct=KeyConversion.convertToDESKey(des.decryption(res_from_as_enc.get(0),cl1.as_symm_key));
+        //SecretKey K_ct=KeyConversion.convertToDESKey(des.decryption(res_from_as_enc.get(0),cl1.as_symm_key));
         //encrypting request with Kct
-        System.out.println("hash"+cl1.doc_hash);
-        ArrayList<String> cl_ts_req_enc=cl_ts_req.encClientTimestampingRequest(K_ct);
-        //Extracting Ticket_c;
-        ArrayList<String> Ticket_c=new ArrayList<String>();
-        Ticket_c.add(res_from_as_enc.get(2));
-        Ticket_c.add(res_from_as_enc.get(3));
-        Ticket_c.add(res_from_as_enc.get(4));
+        //System.out.println("hash"+cl1.doc_hash);
+        ArrayList<String> cl_ts_req_enc=cl_ts_req.encClientTimestampingRequest(auth_res.symm_key);
+        
         //creating timestamping request
 
         TimestampingRequest t_req=new TimestampingRequest(cl1.client_id,auth_res.enc_auth_ticket,cl_ts_req_enc);
-        //
+        //Timestamping response recorded in ts_res_enc
         ArrayList<String> ts_res_enc=ts.timestamping_request(t_req);
+        //Decrypting first using K_ct
+        TimestampingResponse ts_res_decrypted=TimestampingResponse.decTimestampingResponse(ts_res_enc, auth_res.symm_key);
+        //Decrypting next using TS public key
+        cl1.store_Doc_response(ts_res_decrypted);
+        System.out.println("hash in doc response : "+cl1.dr.doc_hash);
+        // part 2
 
-        /*System.out.println(res_from_as_dec.size());
-        for(int i=0;i<res_from_as_dec.size();i++)
-        System.out.println(res_from_as_dec.get(i));*/
+        cl2.start();
+        AuthenticationRequest ar2=cl2.send_request_to_as(2);
+        ArrayList<String> res_from_as_enc2=as.service_request(ar2);
+        AuthenticationResponse auth_res2 = AuthenticationResponse.decAuthenticationResponse(res_from_as_enc2, cl2.as_symm_key);
+        //creating request for public key of server
+        ClientPublicKeyRequest cl_pbkey_req=new ClientPublicKeyRequest(cl2.client_id,ts.id);
+        ArrayList<String> cl_pbkey_req_enc=cl_pbkey_req.encClientPublicKeyRequest(auth_res2.symm_key);
+        //creating public key request
+        PublicKeyRequest pbkey_req=new PublicKeyRequest(cl2.client_id,auth_res2.enc_auth_ticket,cl_pbkey_req_enc);
+        //public key response
+        ArrayList<String> pbkey_res_enc=pks.public_key_request(pbkey_req);
+        //decrypting to get public key
+        PublicKeyResponse pbkey_response_dec=PublicKeyResponse.decPublicKeyResponse(pbkey_res_enc, auth_res2.symm_key);
+
     }
 }

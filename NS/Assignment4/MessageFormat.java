@@ -209,12 +209,12 @@ class PublicKeyResponse{
     }
 }
 class DocResponse{
-    String doc; //TODO:see if this needs to be changed
+    String doc_hash; //TODO:see if this needs to be changed
     String gmt_timestamp;
     String server_id;
     ArrayList<String> sign;
     DocResponse(String d, String ts,String sid,ArrayList<String> sign){
-        doc = d;
+        doc_hash = d;
         gmt_timestamp = ts;
         server_id = sid;
         this.sign = sign;

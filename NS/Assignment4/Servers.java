@@ -84,7 +84,9 @@ class PublicKeyServer{//changing name for CA
             if(pk_req.client_id.equals(auth_ticket.client_id)){
                 ClientPublicKeyRequest c_req = ClientPublicKeyRequest.decClientPublicKeyRequestlientTimestampingRequest(pk_req.client_request, auth_ticket.symm_key);
                 PublicKey k = public_keys.get(c_req.server_id);//we will assume that the key is always found
+                System.out.println("Server id : "+c_req.server_id+" Public key : "+k);
                 PublicKeyResponse res = new PublicKeyResponse(k);
+                System.out.println("returninng public key response");
                 return res.encPublicKeyResponse(auth_ticket.symm_key);
             }
         }
