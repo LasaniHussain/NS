@@ -33,6 +33,7 @@ public class Assignment4{
         as.DiplaySymmKeys();
         as.pk_id = pks.id;
         as.ts_id = ts.id;
+        pks.addPublicKey(ts.id, ts.rsa_public_key);
     }
     public static void main(String[] args){
         //init();
