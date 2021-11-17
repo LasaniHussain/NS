@@ -151,8 +151,9 @@ class DigitalSignature{
         res.add(rsa.encryption(server_id, k));
         */
         res.add(des.encryption(doc_hash, des_key));
-        res.add(des.encryption(doc_hash, des_key));
-        res.add(des.encryption(doc_hash, des_key));
+        res.add(des.encryption(gmt_timestamp, des_key));
+        res.add(des.encryption(client_id, des_key));
+        res.add(des.encryption(server_id, des_key));
         res.add(rsa.encryption(KeyConversion.convertDESToString(des_key), k));
         return res;
     }
