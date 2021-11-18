@@ -16,16 +16,17 @@ class Client{
     //String timestamped_doc;//this can either by the doc timestamped by ts or recieved form another client
     DocResponse dr;
     String doc_hash;
+    String doc_path;
     Client()
     {   Random rn = new Random();
         client_id= String.valueOf(rn.nextInt(100));
     }
-    void genHash(String path)
+    void genHash()
     {
         
         try
         {
-            File file = new File(path);
+            File file = new File(doc_path);
             PDDocument document = PDDocument.load(file);
             //Instantiate PDFTextStripper class
             PDFTextStripper pdfStripper = new PDFTextStripper();
@@ -55,8 +56,8 @@ class Client{
         }
     }
     void start()
-    {
-        genHash("./Assignment4 NS.pdf");
+    {   doc_path="./Assignment4 NS.pdf";
+        genHash();
         //send_request_to_as(1);
     }
     AuthenticationRequest send_request_to_as(int serviceType){
@@ -80,9 +81,10 @@ class Client{
     void request_doc(){
 
     }
-    /*String send_doc(){
+    void send_doc(Client obj){
         //return timestamped_doc;
-    }*/
+        obj.dr=dr;
+    }
     boolean verify_sign(String signature){
         return false;
     }

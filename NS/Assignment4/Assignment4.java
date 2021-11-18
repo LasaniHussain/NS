@@ -40,6 +40,8 @@ public class Assignment4{
         Client cl2=new Client();
         TimestampingServer ts=new TimestampingServer();
         PublicKeyServer pks=new PublicKeyServer();
+        //System.out.println("public key gen : "+ts.rsa_public_key);
+        pks.addPublicKey(ts.id, ts.rsa_public_key);
         AuthenticationServer as=new AuthenticationServer();
         System.out.println(cl1.client_id+" "+cl2.client_id+" "+ts.id+" "+pks.id+" "+as.id);
         init(cl1,cl2,ts,pks,as);
@@ -84,6 +86,14 @@ public class Assignment4{
         ArrayList<String> pbkey_res_enc=pks.public_key_request(pbkey_req);
         //decrypting to get public key
         PublicKeyResponse pbkey_response_dec=PublicKeyResponse.decPublicKeyResponse(pbkey_res_enc, auth_res2.symm_key);
+        //System.out.println("public key found "+pbkey_response_dec.pub_key);
+        //client 1 sharing doc with client 2
+        cl1.send_doc(cl2);
+        System.out.println(cl2.dr.sign.get(0)+" "+cl2.dr.sign.get(1)+" "+cl2.dr.sign.get(2)+" "+cl2.dr.sign.get(3));
+        //DigitalSignature sign_from_cl1=DigitalSignature.decDigitalSignature(cl2.dr.sign, pbkey_response_dec.pub_key);
+        //System.out.println("decrypted dig sign "+sign_from_cl1.doc_hash+"\n"+sign_from_cl1.gmt_timestamp+"\n"+sign_from_cl1.client_id+"\n"+sign_from_cl1.server_id);
+
+        //System.out.println("calculated hash : "+cl2.doc_hash+" recieved doc hash "+cl2.dr.doc_hash);
 
     }
 }

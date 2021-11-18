@@ -144,12 +144,12 @@ class DigitalSignature{
         RSA rsa = new RSA();
         DES des = new DES();
         SecretKey des_key = des.genDesKey();
-        /*
-        res.add(rsa.encryption(doc_hash, k));
+        
+        /*res.add(rsa.encryption(doc_hash, k));
         res.add(rsa.encryption(gmt_timestamp, k));
         res.add(rsa.encryption(client_id, k));
-        res.add(rsa.encryption(server_id, k));
-        */
+        res.add(rsa.encryption(server_id, k));*/
+        
         res.add(des.encryption(doc_hash, des_key));
         res.add(des.encryption(doc_hash, des_key));
         res.add(des.encryption(doc_hash, des_key));
