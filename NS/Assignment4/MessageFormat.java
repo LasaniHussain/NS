@@ -145,22 +145,12 @@ class DigitalSignature{
         DES des = new DES();
         SecretKey des_key = des.genDesKey();
         
-<<<<<<< HEAD
-        /*res.add(rsa.encryption(doc_hash, k));
-        res.add(rsa.encryption(gmt_timestamp, k));
-        res.add(rsa.encryption(client_id, k));
-        res.add(rsa.encryption(server_id, k));*/
-        
-        res.add(des.encryption(doc_hash, des_key));
-        res.add(des.encryption(doc_hash, des_key));
-=======
         res.add(rsa.encryption(doc_hash, k));
         res.add(rsa.encryption(gmt_timestamp, k));
         res.add(rsa.encryption(client_id, k));
         res.add(rsa.encryption(server_id, k));
         
         /*
->>>>>>> ff34b28a2165484fb7ae2a82d2e2d5f64e02eef0
         res.add(des.encryption(doc_hash, des_key));
         res.add(des.encryption(gmt_timestamp, des_key));
         res.add(des.encryption(client_id, des_key));

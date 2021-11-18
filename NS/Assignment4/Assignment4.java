@@ -90,10 +90,11 @@ public class Assignment4{
         //System.out.println("public key found "+pbkey_response_dec.pub_key);
         //client 1 sharing doc with client 2
         cl1.send_doc(cl2);
-        System.out.println(cl2.dr.sign.get(0)+" "+cl2.dr.sign.get(1)+" "+cl2.dr.sign.get(2)+" "+cl2.dr.sign.get(3));
-        //DigitalSignature sign_from_cl1=DigitalSignature.decDigitalSignature(cl2.dr.sign, pbkey_response_dec.pub_key);
-        //System.out.println("decrypted dig sign "+sign_from_cl1.doc_hash+"\n"+sign_from_cl1.gmt_timestamp+"\n"+sign_from_cl1.client_id+"\n"+sign_from_cl1.server_id);
-
+        //System.out.println(cl2.dr.sign.get(0)+" "+cl2.dr.sign.get(1)+" "+cl2.dr.sign.get(2)+" "+cl2.dr.sign.get(3));
+        DigitalSignature sign_from_cl1=DigitalSignature.decDigitalSignature(cl2.dr.sign, pbkey_response_dec.pub_key);
+        System.out.println("decrypted dig sign hash"+sign_from_cl1.doc_hash+"\n"+sign_from_cl1.gmt_timestamp+"\n"+sign_from_cl1.client_id+"\n"+sign_from_cl1.server_id);
+        System.out.println("recieved from doc response : "+cl2.dr.doc_hash+"\n"+cl2.dr.gmt_timestamp);
+        
         //System.out.println("calculated hash : "+cl2.doc_hash+" recieved doc hash "+cl2.dr.doc_hash);
 
     }
