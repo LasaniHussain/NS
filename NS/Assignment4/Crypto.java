@@ -136,11 +136,11 @@ class RSA{//TODO:check this functionality
             cipher.init(Cipher.ENCRYPT_MODE, key);
             byte[] secretMessageBytes = plaintext.getBytes("UTF8");
             byte[] encryptedMessageBytes = cipher.doFinal(secretMessageBytes);
-            System.out.println("enc bytes"+encryptedMessageBytes.length);
+            //System.out.println("enc bytes"+encryptedMessageBytes.length);
             //System.out.println();
             String res = Base64.getEncoder().encodeToString(encryptedMessageBytes);
             //String res = new String(encryptedMessageBytes);
-            System.out.println("enc string "+res.length());
+            //System.out.println("enc string "+res.length());
             return res;
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,7 +152,7 @@ class RSA{//TODO:check this functionality
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, key);
             byte[] secretMessageBytes = Base64.getDecoder().decode(ciphertext.getBytes());
-            System.out.println(secretMessageBytes.length);
+            //System.out.println(secretMessageBytes.length);
             byte[] encryptedMessageBytes = cipher.doFinal(secretMessageBytes);
             return new String(encryptedMessageBytes,"UTF-8");
             //return new String(encryptedMessageBytes,"UTF-8");

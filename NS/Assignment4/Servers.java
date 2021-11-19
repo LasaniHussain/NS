@@ -133,7 +133,7 @@ class TimestampingServer{
                 DigitalSignature ds = new DigitalSignature(c_req.doc_hash, ts, t_req.client_id, id);
                 ArrayList<String> sign = ds.encDigitalSignature(rsa_private_key);
                 TimestampingResponse t_res = new TimestampingResponse(c_req.doc_hash, ts, id, sign);
-                System.out.println("generating timestamping response");
+                System.out.println("\nTime stamping server generating timestamping response");
                 return t_res.encTimestampingResponse(auth_ticket.symm_key);
             }
         }
